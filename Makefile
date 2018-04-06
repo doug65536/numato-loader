@@ -1,11 +1,11 @@
-VERSION = "0.6 beta"
-SRC = numato-loader.c n25q128a.c
-OBJ = $(SRC:.c=.o)
-LIBS = -lftdi1 $(LIBMPSSE_ARCHIVE)
-CFLAGS = -std=c11 -pedantic -Wall -Os -DVERSION=\"$(VERSION)\" -DLIBFTDI1=1 -Ilibmpsse-master/src
-LDFLAGS = -s $(LIBS)
-LIBMPSSE_ARCHIVE = libmpsse-master/src/libmpsse.a
-LIBMPSSE_URL = https://github.com/devttys0/libmpsse/archive/master.zip
+VERSION := "0.6 beta"
+SRC := numato-loader.c n25q128a.c
+OBJ := $(SRC:.c=.o)
+LIBMPSSE_ARCHIVE := libmpsse-master/src/libmpsse.a
+LIBS := -lftdi1 $(LIBMPSSE_ARCHIVE)
+CFLAGS := -std=c11 -pedantic -Wall -O0 -DVERSION=\"$(VERSION)\" -DLIBFTDI1=1 -Ilibmpsse-master/src -ggdb3
+LDFLAGS := $(LIBS) -ggdb3
+LIBMPSSE_URL := https://github.com/devttys0/libmpsse/archive/master.zip
 
 all: numato-loader
 
@@ -20,7 +20,7 @@ libmpsse-master: libmpsse-master.zip
 $(LIBMPSSE_ARCHIVE): libmpsse-master
 
 .o: .c
-	$(CC) -c $(CFLAGS) $?
+	$(CC) $(CFLAGS) -c $?
 
 numato-loader: $(LIBMPSSE_ARCHIVE) $(OBJ)
 	$(CC) -o numato-loader $(OBJ) $(LDFLAGS)
